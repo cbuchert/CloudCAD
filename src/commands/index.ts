@@ -1,9 +1,11 @@
-import { updateHistory } from '../cli/cliHistory'
+import { pushWarningToHistory } from '../cli/cliHistory'
+
+const invalidCommandText = 'Invalid command'
 
 export const execute: (command: string) => void = (command) => {
   switch (command) {
     default:
-      updateHistory('<span class="cli-history--warning">Not a valid command.</span>')
+      pushWarningToHistory(command, invalidCommandText)
       break
   }
 }
