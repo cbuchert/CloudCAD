@@ -15,6 +15,10 @@ export const pushCommandToHistory: (command: string) => void = command => {
   updateCliHistoryUi(`<div class="cli-history--record">${command}</div>`)
 }
 
+export const pushOutputToHistory: (output: string) => void = output => {
+  updateCliHistoryUi(`<div class="cli-history--output">${output}</div>`)
+}
+
 export const pushWarningToHistory: (command: string, warning: string) => void = (command, warning) => {
   pushCommandToHistory(command)
   updateCliHistoryUi(`<div class="cli-history--warning">  ${warning}</div>`)
