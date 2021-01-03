@@ -10,7 +10,7 @@ html, body {
 .container {
   height: 100%;
   display: grid;
-  grid-template-rows: 2fr 1fr ($cliHistoryHeight + $cliInputHeight + 10px);
+  grid-template-rows: 2fr 1fr ($cliHistoryHeight + $cliInputHeight + 20px);
 }
 
 .code-container {
@@ -29,11 +29,12 @@ html, body {
   font-family: "Courier New", monospace;
   height: $cliHistoryHeight;
   overflow: scroll;
-  padding-bottom: 10px;
+  padding: 10px 8px;
   white-space: pre;
 }
 
 .cli-history--record {
+  font-weight: bold;
 }
 
 .cli-history--output {
@@ -45,6 +46,8 @@ html, body {
 }
 
 .cli-input {
+  font-family: "Courier New", monospace;
+  font-weight: bold;
   padding: 5px 8px;
   width: calc(100% - 20px);
 }

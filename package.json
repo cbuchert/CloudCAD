@@ -19,6 +19,7 @@
     "sass": "^1.32.0"
   },
   "dependencies": {
-    "@svgdotjs/svg.js": "^3.0.16"
+    "@svgdotjs/svg.js": "^3.0.16",
+    "mathjs": "^8.1.1"
   }
 }

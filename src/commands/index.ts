@@ -1,19 +1,17 @@
-import { pushCommandToHistory, pushOutputToHistory, pushWarningToHistory } from '../cli/cliHistory'
+import { evaluate } from 'mathjs'
+import { promptAndExecute } from '../cli/cli'
+import { outputToCli, warnToCli } from '../cli/cliCommandHistory'
 
-const invalidCommandText = 'Invalid command'
-const isMathExpression: RegExp = /^([-+/*]\d+(\.\d+)?)*/
+const commands = {
+  evaluate: () => promptAndExecute('Expression to evaluate:', (value) => {
+    try {
+      const evaluated = evaluate(value)
 
-export const execute: (command: string) => void = (command) => {
-  if (isMathExpression.test(command)) {
-    pushCommandToHistory(command)
-    pushOutputToHistory(`${command} = ${eval(command)}`)
-
-    return
-  }
-
-  switch (command) {
-    default:
-      pushWarningToHistory(command, invalidCommandText)
-      break
-  }
+      outputToCli(`${value} = ${evaluated}`)
+    } catch (e) {
+      warnToCli(e)
+    }
+  })
 }
+
+export default commands
