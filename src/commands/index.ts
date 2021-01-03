@@ -1,17 +1,7 @@
-import { evaluate } from 'mathjs'
-import { promptAndExecute } from '../cli/cli'
-import { outputToCLI, warnToCLI } from '../cli/cliCommandHistory'
+import { evaluate } from './evaluate'
 
 const commands = {
-  evaluate: () => promptAndExecute('Expression to evaluate:', (value) => {
-    try {
-      const evaluated = evaluate(value)
-
-      outputToCLI(`${value} = ${evaluated}`)
-    } catch (e) {
-      warnToCLI(e)
-    }
-  })
+  evaluate,
 }
 
 export default commands
