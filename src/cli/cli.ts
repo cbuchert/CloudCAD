@@ -1,13 +1,15 @@
 import commands from '../commands'
-import { commandToCli, promptToCli, warnToCli } from './cliCommandHistory'
+import { commandToCLI, outputToCLI, promptToCLI, warnToCLI } from './cliCommandHistory'
 
 const invalidCommandText = 'Invalid command'
 const cliFormElement = document.getElementById('cli') as HTMLFormElement
 const cliInputElement = document.getElementById('cli-input') as HTMLInputElement
 
+const clearInput = () => cliInputElement.value = ''
+
 const execute: (command: string) => void = (command) => {
   if (commands[ command ]) commands[ command ]()
-  else warnToCli(invalidCommandText)
+  else warnToCLI(invalidCommandText)
 }
 
 const handleCommand: (callback: (value: string) => void) => (e: Event) => void = callback => e => {
@@ -15,19 +17,28 @@ const handleCommand: (callback: (value: string) => void) => (e: Event) => void =
 
   const input: string = e.target[ 0 ].value
 
-  cliInputElement.value = ''
-  commandToCli(input)
+  clearInput()
+  commandToCLI(input)
   callback(input)
 }
 
-cliFormElement.onsubmit = handleCommand(execute)
+const resetCLIHandler = () => cliFormElement.onsubmit = handleCommand(execute)
+
+resetCLIHandler()
+
+cliInputElement.onkeydown = e => {
+  if (e.key === 'Escape') {
+    outputToCLI('//')
+    clearInput()
+    resetCLIHandler()
+  }
+}
 
 export const promptAndExecute: (message: string, callback: (value: string) => void) => void = (message, callback) => {
-  promptToCli(message)
+  promptToCLI(message)
 
   cliFormElement.onsubmit = handleCommand((input) => {
     callback(input)
-
-    cliFormElement.onsubmit = handleCommand(execute)
+    resetCLIHandler()
   })
 }
