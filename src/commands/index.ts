@@ -1,7 +1,8 @@
+import { Svg } from '@svgdotjs/svg.js'
 import { CLI } from '../cli/cli'
 import { evaluate } from './evaluate'
 
-export type Command = ($workspace, cli: CLI) => void
+export type Command = ($workspace: Svg, cli: CLI) => void
 
 const commands = {
   evaluate,

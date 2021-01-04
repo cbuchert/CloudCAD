@@ -1,5 +1,5 @@
 import { Command } from './index'
 
-export const pan: Command = () => {
+export const pan: Command = ($workspace, cli) => {
 
 }
