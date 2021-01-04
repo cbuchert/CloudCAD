@@ -1,13 +1,12 @@
 import { evaluate as mathjsEval } from 'mathjs'
-import { promptAndExecute } from '../cli/cli'
-import { outputToCLI, warnToCLI } from '../cli/cliCommandHistory'
+import { Command } from './index'
 
-export const evaluate = () => promptAndExecute('Expression to evaluate:', (value) => {
+export const evaluate: Command = ($workspace, cli) => cli.inputAndExecute('Expression to evaluate:', (value) => {
   try {
     const evaluated = mathjsEval(value)
 
-    outputToCLI(`${value} = ${evaluated}`)
+    cli.output(`${value} = ${evaluated}`)
   } catch (e) {
-    warnToCLI(e)
+    cli.warn(e)
   }
 })

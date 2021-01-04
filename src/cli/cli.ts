@@ -1,28 +1,23 @@
 import commands from '../commands'
-import { commandToCLI, outputToCLI, promptToCLI, warnToCLI } from './cliCommandHistory'
+import { $workspace } from '../index'
+import { commandToCLI, outputToCLI, promptToCLI, warnToCLI, WriteToCLI } from './cliCommandHistory'
+
+export type CLI = {
+  inputAndExecute: InputAndExecute
+  prompt: WriteToCLI
+  warn: WriteToCLI
+  output: WriteToCLI
+}
 
 const invalidCommandText = 'Invalid command'
 const cliFormElement = document.getElementById('cli') as HTMLFormElement
 const cliInputElement = document.getElementById('cli-input') as HTMLInputElement
-
-const clearInput = () => cliInputElement.value = ''
-
-const execute: (command: string) => void = (command) => {
-  if (commands[ command ]) commands[ command ]()
-  else warnToCLI(invalidCommandText)
+const cli: CLI = {
+  inputAndExecute,
+  prompt: promptToCLI,
+  warn: warnToCLI,
+  output: outputToCLI,
 }
-
-const handleCommand: (callback: (value: string) => void) => (e: Event) => void = callback => e => {
-  e.preventDefault()
-
-  const input: string = e.target[ 0 ].value
-
-  clearInput()
-  commandToCLI(input)
-  callback(input)
-}
-
-const resetCLIHandler = () => cliFormElement.onsubmit = handleCommand(execute)
 
 resetCLIHandler()
 
@@ -34,7 +29,30 @@ cliInputElement.onkeydown = e => {
   }
 }
 
-export const promptAndExecute: (message: string, callback: (value: string) => void) => void = (message, callback) => {
+function clearInput() { return cliInputElement.value = '' }
+
+function execute(command) {
+  if (commands[ command ]) commands[ command ]($workspace, cli)
+  else warnToCLI(invalidCommandText)
+}
+
+function handleCommand(callback) {
+  return e => {
+    e.preventDefault()
+
+    const input: string = e.target[ 0 ].value
+
+    clearInput()
+    commandToCLI(input)
+    callback(input)
+  }
+}
+
+function resetCLIHandler() { return cliFormElement.onsubmit = handleCommand(execute) }
+
+type InputAndExecute = (message: string, callback: (value: string) => void) => void
+
+export function inputAndExecute(message, callback) {
   promptToCLI(message)
 
   cliFormElement.onsubmit = handleCommand((input) => {
