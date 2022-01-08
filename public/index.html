@@ -2,26 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta
-    name="viewport"
-    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-  >
-  <meta
-    http-equiv="X-UA-Compatible"
-    content="ie=edge"
-  >
-  <title>CloudCAD</title>
-  <link rel="stylesheet" href="../src/style.scss">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
-  <div id="model" class="model-container"></div>
-  <div id="code" class="code-container"></div>
-  <form id="cli" class="cli-container">
-    <div id="cli-history" class="cli-history"></div>
-    <input type="text" id="cli-input" class="cli-input">
-  </form>
-</div>
-<script src="../src/index.ts"></script>
+  <div class="app">
+  <svg id="svg" class="svg" xmlns="http://www.w3.org/2000/svg">
+    <metadata id="metadata15">image/svg+xml</metadata>
+    <g>
+      <title>Layer 1</title>
+      <path d="m20.8916,53.314999c-12.21789,-9.564499 -21.3706,4.6483 -11.172159,7.2024c-3.30392,-2.068298 -3.53187,-5.418301 -1.42263,-7.2365c2.54789,-1.560398 5.72349,-1.242397 8.83699,0.323299c2.779499,1.6646 4.902199,3.977703 6.148199,4.796501l-2.390299,-5.085701l-0.000101,0z" stroke-width="1px" fill-rule="evenodd" fill="#3f3f3f" id="path3205"/>
+      <path d="m172.707001,54.0378c12.218002,-9.564499 19.136002,1.769798 13.587006,5.6399c2.313995,-4.457699 -1.027008,-7.334999 -4.302002,-7.178501c-5.513,0.263401 -9.697998,5.325001 -11.675003,6.624401l2.389999,-5.0858z" stroke-width="1px" fill-rule="evenodd" fill="#3f3f3f" id="path3209"/>
+      <g id="svg_1">
+        <path d="m28.4841,52.895c3.7001,-1.050602 5.342701,-2.7397 5.567101,-4.9865c0.323399,-3.2687 -5.593801,-4.768402 -8.6336,-3.458599c-1.829601,0.788399 -4.240601,2.748898 -4.3738,5.082199c0.2784,5.367699 4.082699,7.8391 8.910799,8.639801c9.367399,1.553497 25.027899,-8.8269 36.994604,-10.603901c12.308296,-1.827702 17.283493,2.684101 20.091293,6.0807c-5.848396,-3.721199 -12.794395,-4.578701 -18.382896,-3.748001c-12.822502,1.9062 -24.736599,12.546799 -38.7045,11.007999c-7.0954,-1.007401 -12.863501,-6.288399 -11.0091,-12.52c2.9151,-8.7113 14.220398,-7.292999 15.927101,-2.629898c1.719398,4.6978 -2.580101,7.444 -6.387001,7.1362z" stroke-width="1px" fill-rule="evenodd" fill="#7f7f7f" id="path3195"/>
+        <path d="m90.8255,56.462399c-20.564301,-9.5644 -28.459499,1.476803 -23.472198,8.277599c-2.444405,-7.241898 3.420395,-10.102497 8.932495,-9.945999c9.2798,0.263401 17.169304,5.325001 20.4972,6.624401l-5.957497,-4.956001z" stroke-width="1px" fill-rule="evenodd" fill="#7f7f7f" id="path3199"/>
+        <path d="m102.908997,56.333302c20.564003,-9.564503 29.442001,1.6059 24.455002,8.406696c2.444,-7.241898 -3.420998,-10.102497 -8.932999,-9.945999c-9.279999,0.263401 -16.327003,4.162701 -19.654503,6.495201l4.1325,-4.955898z" stroke-width="1px" fill-rule="evenodd" fill="#7f7f7f" id="path3203"/>
+        <path d="m163.440002,53.928101c-3.699997,-1.050499 -5.341995,-2.7397 -5.567001,-4.9865c-0.322998,-3.2687 5.593994,-4.768402 8.634003,-3.4585c1.828995,0.788399 4.23999,2.748798 4.373993,5.082199c-0.278992,5.367599 -4.082993,7.8391 -8.910995,8.639801c-9.367996,1.553497 -25.028,-8.827 -36.995003,-10.604c-12.307999,-1.827702 -17.282997,2.684097 -20.090996,6.0807c5.848,-3.7211 12.793999,-4.578701 18.382996,-3.747902c12.822006,1.9062 24.736008,12.546803 38.703995,11.007999c7.096008,-1.007397 12.864014,-6.288498 11.009003,-12.5201c-2.914993,-8.711197 -14.220001,-7.2929 -15.927002,-2.629898c-1.718994,4.697899 2.580002,7.444 6.387009,7.1362z" stroke-width="1px" fill-rule="evenodd" fill="#7f7f7f" id="path3207"/>
+      </g>
+    </g>
+  </svg>
+  <div><input type="text" id="input" class="input"></div>
+  <script type="module" src="../src/index.ts"></script>
+  </div>
 </body>
 </html>
