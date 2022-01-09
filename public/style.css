@@ -16,6 +16,14 @@ html, body {
     height: 100%;
 }
 
+.output {
+    border: 2px solid #aaa;
+    height: 200px;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+}
+
 .input {
     padding: 5px 3px;
 }
