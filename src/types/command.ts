@@ -1,6 +1,3 @@
-export type Command = (
-  svg: SVGElement,
-  getInput: (input: string) => Promise<void>,
-  writeToPrompt: (value: string) => void,
-  parameters: string[]
-) => void
+import { App } from "../core/App"
+
+export type Command = (app: App, svg: SVGElement) => void

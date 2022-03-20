@@ -2,7 +2,9 @@ import { Command } from "../types/command"
 import { pan } from "./pan"
 import { zoom } from "./zoom"
 
-export const commands: { [ command: string ]: Command } = {
+export type CommandDictionary = { [command: string]: Command }
+
+export const commands: CommandDictionary = {
   zoom,
   pan,
 }

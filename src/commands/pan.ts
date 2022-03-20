@@ -1,10 +1,16 @@
 import { Command } from "../types/command"
 
-export const pan: Command = (svg, getInput, writeToPrompt, [ deltaX, deltaY ]) => {
-  const [ minX, minY, x, y ] = svg.getAttribute("viewBox").split(" ").map(parseFloat)
-  const newMinX: number = minX + parseFloat(deltaX)
-  const newMinY: number = minY + parseFloat(deltaY)
+export const pan: Command = (app, svg) => {
+  //TODO: Query the user for how much they'd like to pan.
+  const deltaX = 10
+  const deltaY = 10
+  const [minX, minY, x, y] = svg
+    .getAttribute("viewBox")
+    .split(" ")
+    .map(parseFloat)
+  const newMinX: number = minX + deltaX
+  const newMinY: number = minY + deltaY
 
   svg.setAttribute("viewBox", `${newMinX} ${newMinY} ${x} ${y}`)
-  writeToPrompt(`  Panned to ${newMinX}, ${newMinY}`)
+  app.outputManager.writeToCLI(`  Panned to ${newMinX}, ${newMinY}`)
 }
