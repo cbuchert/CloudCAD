@@ -12,6 +12,7 @@ export const writeToCLI = (value: string) => {
   const newNode = document.createElement("p")
 
   newNode.innerText = value
+  newNode.classList.add("output-text")
 
   //Write to the output.
   _output.appendChild(newNode)

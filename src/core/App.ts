@@ -7,25 +7,37 @@ import { initializeCLIOutputManager } from "./CLIOutputManager"
 import { initializeCommands } from "./CommandManager"
 
 export class App {
-  public inputManager: {
+  inputManager: {
     resetCLIInputHandler: () => void
     setCLIInputHandler: (callback: InputCaptureCallback) => void
   }
 
-  public outputManager: { writeToCLI: (value: string) => void }
+  outputManager: { writeToCLI: (value: string) => void }
 
-  public commandManager: {
+  commandManager: {
     executeCommand: (command: string) => void
     commands: CommandDictionary
   }
 
   constructor(
-    inputForm: HTMLFormElement,
-    outputElement: HTMLPreElement,
-    svg: SVGElement
+    private inputForm: HTMLFormElement,
+    private outputElement: HTMLPreElement,
+    private svg: SVGElement
   ) {
-    this.inputManager = initializeCLIInputManager(inputForm)
-    this.outputManager = initializeCLIOutputManager(outputElement)
-    this.commandManager = initializeCommands(this, svg)
+    this.inputManager = initializeCLIInputManager(this.inputForm)
+    this.outputManager = initializeCLIOutputManager(this.outputElement)
+    this.commandManager = initializeCommands(this, this.svg)
+  }
+
+  reinitialize = () => {
+    this.outputManager.writeToCLI("  Reinitializing the CLI Input Manager...")
+    this.inputManager = initializeCLIInputManager(this.inputForm)
+    this.outputManager.writeToCLI("  Done.")
+    this.outputManager.writeToCLI("  Reinitializing the CLI Output Manager...")
+    this.outputManager = initializeCLIOutputManager(this.outputElement)
+    this.outputManager.writeToCLI("  Done.")
+    this.outputManager.writeToCLI("  Reinitializing the Command Manager...")
+    this.commandManager = initializeCommands(this, this.svg)
+    this.outputManager.writeToCLI("  Done.")
   }
 }

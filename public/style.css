@@ -24,6 +24,10 @@ html, body {
     flex-direction: column;
 }
 
+.output-text {
+    margin: 0;
+}
+
 .input {
     padding: 5px 3px;
 }
