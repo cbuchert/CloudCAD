@@ -8,14 +8,17 @@ let _svg: SVGElement
 export const executeCommand = (command: string) => {
   if (command in commands) {
     //  Execute command
+    _app.outputManager.writeToCLI(command)
     _executeCommand(command)
   } else if (command in aliases) {
     //  Execute the command that the alias is pointing to.
     const aliasedCommand: string = aliases[command]
+    _app.outputManager.writeToCLI(`${command} (${aliasedCommand})`)
 
     _executeCommand(aliasedCommand)
   } else {
     //  Write an error message to the CLI output.
+    _app.outputManager.writeToCLI(`"${command}" - Invalid command or alias.`)
   }
 }
 
