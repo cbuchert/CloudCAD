@@ -2,11 +2,11 @@ export class SelectionManager {
   currentSelection: SVGElement[] = []
 
   add = (elements: SVGElement[] = []) => {
-    const novelElements = elements.filter(
-      (element) => !this.currentSelection.includes(element)
-    )
-
-    this.currentSelection.push(...novelElements)
+    for (const element of elements) {
+      if (!this.currentSelection.includes(element)) {
+        this.currentSelection.push(element)
+      }
+    }
   }
 
   add__unsafe = (elements: SVGElement[]) => {

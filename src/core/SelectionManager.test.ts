@@ -20,6 +20,13 @@ describe("SelectionManager", () => {
     expect(selectionManager.currentSelection.length).toEqual(1)
   })
 
+  it("can safely add multiple elements at the same time.", () => {
+    const elements = new Array(10).fill(null).map(createSVGElement)
+
+    selectionManager.add([...elements, ...elements])
+    expect(selectionManager.currentSelection.length).toEqual(10)
+  })
+
   it("can unsafely (quickly) add elements to its current selection (no duplicate checking).", () => {
     const element = createSVGElement()
 
