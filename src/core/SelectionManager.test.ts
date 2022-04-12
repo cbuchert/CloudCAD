@@ -48,4 +48,24 @@ describe("SelectionManager", () => {
 
     expect(selectionManager.currentSelection.length).toEqual(0)
   })
+
+  it("can remove elements from its current selection.", () => {
+    const firstElement = createSVGElement()
+    const secondElement = createSVGElement()
+
+    selectionManager.add([firstElement, secondElement])
+    selectionManager.remove([firstElement])
+
+    expect(selectionManager.currentSelection.length).toEqual(1)
+  })
+
+  it("doesn't blow up when you try to remove the same element multiple times.", () => {
+    const element = createSVGElement()
+
+    selectionManager.add([element, createSVGElement(), createSVGElement()])
+    selectionManager.remove([element])
+    expect(selectionManager.currentSelection.length).toEqual(2)
+    selectionManager.remove([element, element])
+    expect(selectionManager.currentSelection.length).toEqual(2)
+  })
 })

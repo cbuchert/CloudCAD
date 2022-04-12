@@ -17,7 +17,9 @@ export class SelectionManager {
     for (const element of elements) {
       const index = this.currentSelection.indexOf(element)
 
-      this.currentSelection.splice(index, 1)
+      if (index >= 0) {
+        this.currentSelection.splice(index, 1)
+      }
     }
   }
 
