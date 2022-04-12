@@ -39,4 +39,13 @@ describe("SelectionManager", () => {
     selectionManager.add__unsafe([element, element])
     expect(selectionManager.currentSelection.length).toEqual(4)
   })
+
+  it("can clear its current selection.", () => {
+    const element = createSVGElement()
+
+    selectionManager.add__unsafe([element, element, element])
+    selectionManager.clear()
+
+    expect(selectionManager.currentSelection.length).toEqual(0)
+  })
 })
