@@ -9,7 +9,7 @@ export class SelectionManager {
     }
   }
 
-  add__unsafe = (elements: SVGElement[]) => {
+  add__unsafe = (elements: SVGElement[] = []) => {
     this.currentSelection.push(...elements)
   }
 
