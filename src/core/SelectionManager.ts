@@ -1,7 +1,7 @@
 export class SelectionManager {
   currentSelection: SVGElement[] = []
 
-  addSafe = (elements: SVGElement[] = []) => {
+  add = (elements: SVGElement[] = []) => {
     const novelElements = elements.filter(
       (element) => !this.currentSelection.includes(element)
     )
@@ -9,7 +9,7 @@ export class SelectionManager {
     this.currentSelection.push(...novelElements)
   }
 
-  addUnsafe = (elements: SVGElement[] = []) => {
+  add__unsafe = (elements: SVGElement[]) => {
     this.currentSelection.push(...elements)
   }
 
