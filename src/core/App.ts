@@ -1,26 +1,17 @@
-import { CommandDictionary } from "../commands"
-import {
-  initializeCLIInputManager,
-  InputCaptureCallback,
-} from "./CLIInputManager"
-import { initializeCLIOutputManager } from "./CLIOutputManager"
-import { initializeCommands } from "./CommandManager"
+import { CLIInputManager, ICLIInputManager } from "./CLIInputManager"
+import { CLIOutputManager, ICLIOutputManager } from "./CLIOutputManager"
+import { CommandManager, ICommandManager } from "./CommandManager"
+import { CursorManager, ICursorManager } from "./CursorManager/CursorManager"
+import { IKeypressManager, KeypressManager } from "./KeypressManager"
 import { SelectionManager } from "./SelectionManager"
 
 export class App {
-  inputManager: {
-    resetCLIInputHandler: () => void
-    setCLIInputHandler: (callback: InputCaptureCallback) => void
-  }
-
-  outputManager: { writeToCLI: (value: string) => void }
-
-  commandManager: {
-    executeCommand: (command: string) => void
-    commands: CommandDictionary
-  }
-
   selectionManager: SelectionManager
+  commandManager: ICommandManager
+  cliInputManager: ICLIInputManager
+  cliOutputManager: ICLIOutputManager
+  keypressManager: IKeypressManager
+  cursorManager: ICursorManager
 
   constructor(
     private inputForm: HTMLFormElement,
@@ -28,23 +19,31 @@ export class App {
     private svg: SVGElement
   ) {
     this.selectionManager = new SelectionManager()
-    this.inputManager = initializeCLIInputManager(this.inputForm)
-    this.outputManager = initializeCLIOutputManager(this.outputElement)
-    this.commandManager = initializeCommands(this, this.svg)
+    this.commandManager = new CommandManager(this, this.svg)
+    this.cliInputManager = new CLIInputManager(
+      this.inputForm,
+      this.commandManager
+    )
+    this.cliOutputManager = new CLIOutputManager(this.outputElement)
+    this.keypressManager = new KeypressManager(this.cliOutputManager)
+    this.cursorManager = new CursorManager(svg, this.selectionManager)
   }
 
   reinitialize = () => {
-    this.outputManager.writeToCLI("  Reinitializing the Selection Manager...")
+    this.cliOutputManager.writeToCLI("  Reinitializing the Selection Manager.")
     this.selectionManager = new SelectionManager()
-    this.outputManager.writeToCLI("  Done.")
-    this.outputManager.writeToCLI("  Reinitializing the CLI Input Manager...")
-    this.inputManager = initializeCLIInputManager(this.inputForm)
-    this.outputManager.writeToCLI("  Done.")
-    this.outputManager.writeToCLI("  Reinitializing the CLI Output Manager...")
-    this.outputManager = initializeCLIOutputManager(this.outputElement)
-    this.outputManager.writeToCLI("  Done.")
-    this.outputManager.writeToCLI("  Reinitializing the Command Manager...")
-    this.commandManager = initializeCommands(this, this.svg)
-    this.outputManager.writeToCLI("  Done.")
+    this.cliOutputManager.writeToCLI("  Reinitializing the Command Manager.")
+    this.commandManager = new CommandManager(this, this.svg)
+    this.cliOutputManager.writeToCLI("  Reinitializing the CLI Input Manager.")
+    this.cliInputManager = new CLIInputManager(
+      this.inputForm,
+      this.commandManager
+    )
+    this.cliOutputManager.writeToCLI("  Reinitializing the CLI Output Manager.")
+    this.cliOutputManager = new CLIOutputManager(this.outputElement)
+    this.cliOutputManager.writeToCLI("  Reinitializing the Keypress Manager.")
+    this.keypressManager = new KeypressManager(this.cliOutputManager)
+    this.cliOutputManager.writeToCLI("  Reinitializing the Cursor Manager.")
+    this.cursorManager = new CursorManager(this.svg, this.selectionManager)
   }
 }

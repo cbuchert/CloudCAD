@@ -1,37 +1,35 @@
 import { commands } from "../commands"
-import { App } from "./App"
 import { aliases } from "./aliases"
+import { App } from "./App"
 
-let _app: App
-let _svg: SVGElement
+export interface ICommandManager {
+  executeCommand: (command: string) => void
+}
 
-export const executeCommand = (command: string) => {
-  if (command in commands) {
-    //  Execute command
-    _app.outputManager.writeToCLI(command)
-    _executeCommand(command)
-  } else if (command in aliases) {
-    //  Execute the command that the alias is pointing to.
-    const aliasedCommand: string = aliases[command]
-    _app.outputManager.writeToCLI(`${command} (${aliasedCommand})`)
+export class CommandManager implements ICommandManager {
+  constructor(private _app: App, private _svg: SVGElement) {}
 
-    _executeCommand(aliasedCommand)
-  } else {
-    //  Write an error message to the CLI output.
-    _app.outputManager.writeToCLI(`"${command}" - Invalid command or alias.`)
+  executeCommand = (command: string) => {
+    if (command in commands) {
+      //  Execute command
+      this._app.cliOutputManager.writeToCLI(command)
+      this._executeCommand(command)
+    } else if (command in aliases) {
+      //  Execute the command that the alias is pointing to.
+      // @ts-ignore
+      const aliasedCommand: string = aliases[command]
+
+      this._app.cliOutputManager.writeToCLI(`${command} (${aliasedCommand})`)
+      this._executeCommand(aliasedCommand)
+    } else {
+      //  Write an error message to the CLI output.
+      this._app.cliOutputManager.writeToCLI(
+        `"${command}" - Invalid command or alias.`
+      )
+    }
   }
-}
 
-const _executeCommand = (command: string) => {
-  commands[command](_app, _svg)
-}
-
-export const initializeCommands = (app: App, svg: SVGElement) => {
-  _app = app
-  _svg = svg
-
-  return {
-    commands,
-    executeCommand,
+  private _executeCommand = (command: string) => {
+    commands[command](this._app, this._svg)
   }
 }

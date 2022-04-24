@@ -12,5 +12,5 @@ export const pan: Command = (app, svg) => {
   const newMinY: number = minY + deltaY
 
   svg.setAttribute("viewBox", `${newMinX} ${newMinY} ${x} ${y}`)
-  app.outputManager.writeToCLI(`  Panned to ${newMinX}, ${newMinY}`)
+  app.cliOutputManager.writeToCLI(`  Panned to ${newMinX}, ${newMinY}`)
 }

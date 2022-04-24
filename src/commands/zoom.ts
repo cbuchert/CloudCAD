@@ -9,5 +9,5 @@ export const zoom: Command = (app, svg) => {
   const y = svg.clientHeight / scaleFactor
 
   svg.setAttribute("viewBox", `${minX} ${minY} ${x} ${y}`)
-  app.outputManager.writeToCLI(`  Zoomed ${scaleFactor}x`)
+  app.cliOutputManager.writeToCLI(`  Zoomed ${scaleFactor}x`)
 }

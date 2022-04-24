@@ -1,21 +1,19 @@
-let _output: HTMLPreElement
-
-export const initializeCLIOutputManager = (outputElement: HTMLPreElement) => {
-  _output = outputElement
-
-  return {
-    writeToCLI,
-  }
+export interface ICLIOutputManager {
+  writeToCLI: (value: string) => void
 }
 
-export const writeToCLI = (value: string) => {
-  const newNode = document.createElement("p")
+export class CLIOutputManager implements ICLIOutputManager {
+  constructor(private _output: HTMLPreElement) {}
 
-  newNode.innerText = value
-  newNode.classList.add("output-text")
+  writeToCLI = (value: string) => {
+    const newNode = document.createElement("p")
 
-  //Write to the output.
-  _output.appendChild(newNode)
-  //Scroll to the bottom of the _output container.
-  _output.scrollTop = _output.scrollHeight
+    newNode.innerText = value
+    newNode.classList.add("output-text")
+
+    //Write to the output.
+    this._output.appendChild(newNode)
+    //Scroll to the bottom of the _output container.
+    this._output.scrollTop = this._output.scrollHeight
+  }
 }

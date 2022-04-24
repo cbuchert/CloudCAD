@@ -1,48 +1,46 @@
-import { executeCommand } from "./CommandManager"
+import { ICommandManager } from "./CommandManager"
 
 export type InputCaptureCallback = (e: Event) => void
 
-let _input: HTMLFormElement
+export interface ICLIInputManager {}
 
-// Todo: Add handler for pressing space bar to submit the form.
-
-export const initializeCLIInputManager = (inputForm: HTMLFormElement) => {
-  _input = inputForm
-
-  resetCLIInputHandler()
-
-  return {
-    setCLIInputHandler,
-    resetCLIInputHandler,
-  }
-}
-
-const setCLIInputHandler = (callback: InputCaptureCallback) => {
-  // Start by cloning _input, removing all old event listeners.
-  const clone = _input.cloneNode(true) as HTMLInputElement & {
-    children: { input: HTMLInputElement }
+export class CLIInputManager implements ICLIInputManager {
+  constructor(
+    private inputForm: HTMLFormElement,
+    private commandManager: ICommandManager
+  ) {
+    this.resetCLIInputHandler()
   }
 
-  // Replace the input node with the event listener stripped clone.
-  _input.replaceWith(clone)
+  // Todo: Add handler for pressing space bar to submit the form.
 
-  // Add new event listeners to the clone.
-  clone.addEventListener("submit", (e) => {
-    e.preventDefault()
-    callback(e)
-    clearInput(clone.children.input as HTMLInputElement)
-  })
-}
+  setCLIInputHandler = (callback: InputCaptureCallback) => {
+    // Start by cloning this.inputForm, removing all old event listeners.
+    const clone = this.inputForm.cloneNode(true) as HTMLInputElement & {
+      children: { input: HTMLInputElement }
+    }
 
-const resetCLIInputHandler = () => {
-  setCLIInputHandler((e) => {
-    const formData = new FormData(e.target)
-    const input = formData.get("input") as string
+    // Replace the input node with the event listener stripped clone.
+    this.inputForm.replaceWith(clone)
 
-    executeCommand(input)
-  })
-}
+    // Add new event listeners to the clone.
+    clone.addEventListener("submit", (e) => {
+      e.preventDefault()
+      callback(e)
+      this.clearInput(clone.children.input as HTMLInputElement)
+    })
+  }
 
-const clearInput = (input: HTMLInputElement) => {
-  input.value = ""
+  resetCLIInputHandler = () => {
+    this.setCLIInputHandler((e) => {
+      const formData = new FormData(e.target)
+      const input = formData.get("input") as string
+
+      this.commandManager.executeCommand(input)
+    })
+  }
+
+  clearInput = (input: HTMLInputElement) => {
+    input.value = ""
+  }
 }
