@@ -1,13 +1,20 @@
 import { commands } from "../commands"
 import { aliases } from "./aliases"
 import { App } from "./App"
+import { ICLIOutputManager } from "./CLIOutputManager"
 
 export interface ICommandManager {
   executeCommand: (command: string) => void
 }
 
 export class CommandManager implements ICommandManager {
-  constructor(private _app: App, private _svg: SVGElement) {}
+  constructor(
+    private _app: App,
+    private _svg: SVGElement,
+    private cliOutputManager: ICLIOutputManager
+  ) {
+    cliOutputManager.writeToCLI("  Initializing the Command Manager.")
+  }
 
   executeCommand = (command: string) => {
     if (command in commands) {

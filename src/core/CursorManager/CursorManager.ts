@@ -1,3 +1,4 @@
+import { ICLIOutputManager } from "../CLIOutputManager"
 import { SelectionManager } from "../SelectionManager"
 
 type CursorState = "empty" | "pick" | "fence" | "marquee"
@@ -28,8 +29,10 @@ export class CursorManager implements ICursorManager {
 
   constructor(
     private svg: SVGElement,
-    private selectionManager: SelectionManager
+    private selectionManager: SelectionManager,
+    private cliOutputManager: ICLIOutputManager
   ) {
+    cliOutputManager.writeToCLI("  Initializing the Cursor Manager.")
     svg.addEventListener("click", this._cursorCallback)
   }
 

@@ -1,14 +1,17 @@
+import { ICLIOutputManager } from "./CLIOutputManager"
 import { ICommandManager } from "./CommandManager"
 
-export type InputCaptureCallback = (e: Event) => void
+export type InputCaptureCallback = (e: SubmitEvent) => void
 
 export interface ICLIInputManager {}
 
 export class CLIInputManager implements ICLIInputManager {
   constructor(
     private inputForm: HTMLFormElement,
-    private commandManager: ICommandManager
+    private commandManager: ICommandManager,
+    private cliOutputManager: ICLIOutputManager
   ) {
+    cliOutputManager.writeToCLI("  Initializing the CLI Input Manager.")
     this.resetCLIInputHandler()
   }
 

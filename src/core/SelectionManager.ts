@@ -1,5 +1,11 @@
+import { ICLIOutputManager } from "./CLIOutputManager"
+
 export class SelectionManager {
   currentSelection: SVGElement[] = []
+
+  constructor(private cliOutputManager: ICLIOutputManager) {
+    cliOutputManager.writeToCLI("  Initializing the Selection Manager.")
+  }
 
   add = (elements: SVGElement[] = []) => {
     for (const element of elements) {

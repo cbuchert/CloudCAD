@@ -3,7 +3,9 @@ export interface ICLIOutputManager {
 }
 
 export class CLIOutputManager implements ICLIOutputManager {
-  constructor(private _output: HTMLPreElement) {}
+  constructor(private _output: HTMLPreElement) {
+    this.writeToCLI("  Initializing the CLI Output Manager.")
+  }
 
   writeToCLI = (value: string) => {
     const newNode = document.createElement("p")
