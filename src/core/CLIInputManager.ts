@@ -6,7 +6,7 @@ type ExecutableCommandlets = { [name: string]: Function }
 
 export interface ICLIInputManager {
   submit: () => void
-  awaitInputFromListOfCommandlets: (commandlets: Commandlet[]) => Promise<void>
+  handleInputFromListOfCommandlets: (commandlets: Commandlet[]) => Promise<void>
 }
 
 export class CLIInputManager implements ICLIInputManager {
@@ -14,8 +14,6 @@ export class CLIInputManager implements ICLIInputManager {
 
   private _handleCommand = async (input: string) => {
     await this.commandManager.executeCommand(input)
-
-    return "done."
   }
 
   private _awaitValue =
@@ -24,11 +22,20 @@ export class CLIInputManager implements ICLIInputManager {
         executableCommandlets[input]()
       }
 
-      this.awaitCommand()
-      return input
+      this._updateToHandleCommand()
     }
 
-  private _inputHandler: (input: string) => Promise<string>
+  private _inputHandler: (input: string) => Promise<void>
+
+  private _updateToHandleCommand = () => {
+    this._inputHandler = this._handleCommand
+  }
+
+  private updateToHandleExecutableCommandlets = (
+    executableCommandlets: ExecutableCommandlets
+  ) => {
+    this._inputHandler = this._awaitValue(executableCommandlets)
+  }
 
   constructor(
     private inputElement: HTMLInputElement,
@@ -48,15 +55,7 @@ export class CLIInputManager implements ICLIInputManager {
     await this._inputHandler(input)
   }
 
-  awaitCommand = () => {
-    this._inputHandler = this._handleCommand
-  }
-
-  awaitCommandlets = (executableCommandlets: ExecutableCommandlets) => {
-    this._inputHandler = this._awaitValue(executableCommandlets)
-  }
-
-  awaitInputFromListOfCommandlets = async (commandlets: Commandlet[]) => {
+  handleInputFromListOfCommandlets = async (commandlets: Commandlet[]) => {
     const executableCommandlets = commandlets.reduce(
       (acc, commandlet) => ({
         ...acc,
@@ -65,6 +64,6 @@ export class CLIInputManager implements ICLIInputManager {
       {}
     )
 
-    this.awaitCommandlets(executableCommandlets)
+    this.updateToHandleExecutableCommandlets(executableCommandlets)
   }
 }

@@ -17,9 +17,12 @@ const _zoomToWindow = (app: App, svg: SVGSVGElement) => (input: string) => {
   console.log("Zoom to window")
 }
 
+const _zoomPrevious = (app: App, svg: SVGSVGElement) => () => {
+  console.log("Zoom previous")
+}
+
 export const zoom: Command = async (app, svg) => {
   //TODO: Translate the zoom to work from the center of the screen, not the origin of the viewbox.
-  //TODO: Prompt the user for the type of zoom.
 
   app.executeCommandletOnCLISelection([
     {
@@ -41,6 +44,11 @@ export const zoom: Command = async (app, svg) => {
       title: "[W]indow",
       command: "w",
       callback: _zoomToWindow(app, svg),
+    },
+    {
+      title: "[P]revious",
+      command: "p",
+      callback: _zoomPrevious(app, svg),
     },
   ])
   // const scaleFactor = 2

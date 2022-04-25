@@ -52,6 +52,6 @@ export class App {
       "  " + commandlets.map(({ title }) => title).join(" | ")
     )
 
-    await this.cliInputManager.awaitInputFromListOfCommandlets(commandlets)
+    await this.cliInputManager.handleInputFromListOfCommandlets(commandlets)
   }
 }
