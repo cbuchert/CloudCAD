@@ -28,14 +28,28 @@ export interface ICursorManager {
 
 export class CursorManager implements ICursorManager {
   eventBuffer: CursorEvent[] = []
+  cursorX: HTMLDivElement
+  cursorY: HTMLDivElement
 
   constructor(
     private svg: SVGSVGElement,
     private selectionManager: SelectionManager,
     private cliOutputManager: ICLIOutputManager
   ) {
+    this.cursorX = document.getElementById("cursor-x") as HTMLDivElement
+    this.cursorY = document.getElementById("cursor-y") as HTMLDivElement
     cliOutputManager.writeToCLI("Initializing the Cursor manager.")
     svg.addEventListener("click", this._cursorCallback)
+    this.trackCursor()
+  }
+
+  private trackCursor = () => {
+    this.svg.addEventListener("mousemove", (e) => {
+      requestAnimationFrame(() => {
+        this.cursorX.style.left = e.clientX + "px"
+        this.cursorY.style.top = e.clientY + "px"
+      })
+    })
   }
 
   _handleEmpty: MouseEventHandler = (e) => {}
