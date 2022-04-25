@@ -1,6 +1,6 @@
 import { Command } from "../types/command"
 
-export const pan: Command = (app, svg) => {
+export const pan: Command = async (app, svg) => {
   //TODO: Query the user for how much they'd like to pan.
   const deltaX = 10
   const deltaY = 10

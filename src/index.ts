@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
     // New up the app.
     const app = new App(
-      input as HTMLFormElement,
+      input as HTMLInputElement,
       output as HTMLPreElement,
       svg as unknown as SVGSVGElement
     )

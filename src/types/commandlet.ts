@@ -1,9 +1,5 @@
-import { App } from "../core/App"
-
 export type Commandlet = {
-  name: string
-  description: string
+  title: string
   command: string
-  children: Commandlet[]
-  callback: (app: App, svg: SVGElement) => void
+  callback: Function
 }

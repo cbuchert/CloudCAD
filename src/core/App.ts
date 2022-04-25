@@ -1,3 +1,4 @@
+import { Commandlet } from "../types/commandlet"
 import { CLIInputManager, ICLIInputManager } from "./CLIInputManager"
 import { CLIOutputManager, ICLIOutputManager } from "./CLIOutputManager"
 import { CommandManager, ICommandManager } from "./CommandManager"
@@ -14,7 +15,7 @@ export class App {
   cursorManager!: ICursorManager
 
   constructor(
-    private inputForm: HTMLFormElement,
+    private htmlInputElement: HTMLInputElement,
     private outputElement: HTMLPreElement,
     private svg: SVGSVGElement
   ) {
@@ -30,15 +31,27 @@ export class App {
       this.cliOutputManager
     )
     this.cliInputManager = new CLIInputManager(
-      this.inputForm,
+      this.htmlInputElement,
       this.commandManager,
       this.cliOutputManager
     )
-    this.keypressManager = new KeypressManager(this.cliOutputManager)
+    this.keypressManager = new KeypressManager(
+      this.cliOutputManager,
+      this.cliInputManager,
+      this.commandManager
+    )
     this.cursorManager = new CursorManager(
       this.svg,
       this.selectionManager,
       this.cliOutputManager
     )
+  }
+
+  executeCommandletOnCLISelection = async (commandlets: Commandlet[]) => {
+    this.cliOutputManager.writeToCLI(
+      "  " + commandlets.map(({ title }) => title).join(" | ")
+    )
+
+    await this.cliInputManager.awaitInputFromListOfCommandlets(commandlets)
   }
 }

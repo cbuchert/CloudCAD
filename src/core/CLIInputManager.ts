@@ -1,49 +1,70 @@
+import { Commandlet } from "../types/commandlet"
 import { ICLIOutputManager } from "./CLIOutputManager"
 import { ICommandManager } from "./CommandManager"
 
-export type InputCaptureCallback = (e: SubmitEvent) => void
+type ExecutableCommandlets = { [name: string]: Function }
 
-export interface ICLIInputManager {}
+export interface ICLIInputManager {
+  submit: () => void
+  awaitInputFromListOfCommandlets: (commandlets: Commandlet[]) => Promise<void>
+}
 
 export class CLIInputManager implements ICLIInputManager {
+  private _previousCommand: string = ""
+
+  private _handleCommand = async (input: string) => {
+    await this.commandManager.executeCommand(input)
+
+    return "done."
+  }
+
+  private _awaitValue =
+    (executableCommandlets: ExecutableCommandlets) => async (input: string) => {
+      if (executableCommandlets[input]) {
+        executableCommandlets[input]()
+      }
+
+      this.awaitCommand()
+      return input
+    }
+
+  private _inputHandler: (input: string) => Promise<string>
+
   constructor(
-    private inputForm: HTMLFormElement,
+    private inputElement: HTMLInputElement,
     private commandManager: ICommandManager,
     private cliOutputManager: ICLIOutputManager
   ) {
     cliOutputManager.writeToCLI("  Initializing the CLI Input manager.")
-    this.resetCLIInputHandler()
+    this._inputHandler = this._handleCommand
   }
 
-  // Todo: Add handler for pressing space bar to submit the form.
+  submit = async () => {
+    const input = this.inputElement.value.trim()
 
-  setCLIInputHandler = (callback: InputCaptureCallback) => {
-    // Start by cloning this.inputForm, removing all old event listeners.
-    const clone = this.inputForm.cloneNode(true) as HTMLInputElement & {
-      children: { input: HTMLInputElement }
-    }
+    if (input) this._previousCommand = input
+    this.inputElement.value = ""
 
-    // Replace the input node with the event listener stripped clone.
-    this.inputForm.replaceWith(clone)
-
-    // Add new event listeners to the clone.
-    clone.addEventListener("submit", (e) => {
-      e.preventDefault()
-      callback(e)
-      this.clearInput(clone.children.input as HTMLInputElement)
-    })
+    await this._inputHandler(input)
   }
 
-  resetCLIInputHandler = () => {
-    this.setCLIInputHandler((e) => {
-      const formData = new FormData(e.target as HTMLFormElement)
-      const input = formData.get("input") as string
-
-      this.commandManager.executeCommand(input)
-    })
+  awaitCommand = () => {
+    this._inputHandler = this._handleCommand
   }
 
-  clearInput = (input: HTMLInputElement) => {
-    input.value = ""
+  awaitCommandlets = (executableCommandlets: ExecutableCommandlets) => {
+    this._inputHandler = this._awaitValue(executableCommandlets)
+  }
+
+  awaitInputFromListOfCommandlets = async (commandlets: Commandlet[]) => {
+    const executableCommandlets = commandlets.reduce(
+      (acc, commandlet) => ({
+        ...acc,
+        [commandlet.command]: commandlet.callback,
+      }),
+      {}
+    )
+
+    this.awaitCommandlets(executableCommandlets)
   }
 }

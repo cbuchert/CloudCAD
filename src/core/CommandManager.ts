@@ -4,30 +4,34 @@ import { App } from "./App"
 import { ICLIOutputManager } from "./CLIOutputManager"
 
 export interface ICommandManager {
-  executeCommand: (command: string) => void
+  isExecutingCommand: boolean
+  executeCommand: (command: string) => Promise<void>
 }
 
 export class CommandManager implements ICommandManager {
+  isExecutingCommand: boolean
+
   constructor(
     private _app: App,
-    private _svg: SVGElement,
+    private _svg: SVGSVGElement,
     private cliOutputManager: ICLIOutputManager
   ) {
     cliOutputManager.writeToCLI("  Initializing the Command manager.")
+    this.isExecutingCommand = false
   }
 
-  executeCommand = (command: string) => {
+  executeCommand = async (command: string) => {
     if (command in commands) {
       //  Execute command
       this._app.cliOutputManager.writeToCLI(command)
-      this._executeCommand(command)
+      await this._executeCommand(command)
     } else if (command in aliases) {
       //  Execute the command that the alias is pointing to.
       // @ts-ignore
       const aliasedCommand: string = aliases[command]
 
       this._app.cliOutputManager.writeToCLI(`${command} (${aliasedCommand})`)
-      this._executeCommand(aliasedCommand)
+      await this._executeCommand(aliasedCommand)
     } else {
       //  Write an error message to the CLI output.
       this._app.cliOutputManager.writeToCLI(
@@ -38,7 +42,13 @@ export class CommandManager implements ICommandManager {
 
   private _executeCommand = (command: string) => {
     if (this._app && this._svg) {
-      commands[command](this._app, this._svg)
+      this.isExecutingCommand = true
+
+      const commandPromise = commands[command](this._app, this._svg).finally(
+        () => {
+          this.isExecutingCommand = false
+        }
+      )
     }
   }
 }

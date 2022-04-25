@@ -1,18 +1,58 @@
+import { App } from "../core/App"
 import { Command } from "../types/command"
 
-export const zoom: Command = (app, svg) => {
+const _zoomExtents = (app: App, svg: SVGSVGElement) => () => {
+  console.log("Zoom extents")
+}
+
+const _zoomToScale = (app: App, svg: SVGSVGElement) => (input: string) => {
+  console.log("Zoom to scale")
+}
+
+const _zoomByScale = (app: App, svg: SVGSVGElement) => (input: string) => {
+  console.log("Zoom by scale")
+}
+
+const _zoomToWindow = (app: App, svg: SVGSVGElement) => (input: string) => {
+  console.log("Zoom to window")
+}
+
+export const zoom: Command = async (app, svg) => {
   //TODO: Translate the zoom to work from the center of the screen, not the origin of the viewbox.
   //TODO: Prompt the user for the type of zoom.
-  const scaleFactor = 2
-  const [svgOriginDeltaX, svgOriginDeltaY] = svg
-    .getAttribute("viewBox")!
-    .split(" ")
-  const width = svg.clientWidth / scaleFactor
-  const height = svg.clientHeight / scaleFactor
 
-  svg.setAttribute(
-    "viewBox",
-    `${svgOriginDeltaX} ${svgOriginDeltaY} ${width} ${height}`
-  )
-  app.cliOutputManager.writeToCLI(`  Zoomed ${scaleFactor}x`)
+  app.executeCommandletOnCLISelection([
+    {
+      title: "[E]xtents",
+      command: "e",
+      callback: _zoomExtents(app, svg),
+    },
+    {
+      title: "[T]o scale",
+      command: "t",
+      callback: _zoomToScale(app, svg),
+    },
+    {
+      title: "[S]cale by",
+      command: "s",
+      callback: _zoomByScale(app, svg),
+    },
+    {
+      title: "[W]indow",
+      command: "w",
+      callback: _zoomToWindow(app, svg),
+    },
+  ])
+  // const scaleFactor = 2
+  // const [svgOriginDeltaX, svgOriginDeltaY] = svg
+  //   .getAttribute("viewBox")!
+  //   .split(" ")
+  // const width = svg.clientWidth / scaleFactor
+  // const height = svg.clientHeight / scaleFactor
+  //
+  // svg.setAttribute(
+  //   "viewBox",
+  //   `${svgOriginDeltaX} ${svgOriginDeltaY} ${width} ${height}`
+  // )
+  // app.cliOutputManager.writeToCLI(`  Zoomed ${scaleFactor}x`)
 }
