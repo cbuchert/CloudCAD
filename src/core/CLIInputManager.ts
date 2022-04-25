@@ -36,7 +36,7 @@ export class CLIInputManager implements ICLIInputManager {
 
   resetCLIInputHandler = () => {
     this.setCLIInputHandler((e) => {
-      const formData = new FormData(e.target)
+      const formData = new FormData(e.target as HTMLFormElement)
       const input = formData.get("input") as string
 
       this.commandManager.executeCommand(input)

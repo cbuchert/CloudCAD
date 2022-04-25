@@ -37,6 +37,8 @@ export class CommandManager implements ICommandManager {
   }
 
   private _executeCommand = (command: string) => {
-    commands[command](this._app, this._svg)
+    if (this._app && this._svg) {
+      commands[command](this._app, this._svg)
+    }
   }
 }

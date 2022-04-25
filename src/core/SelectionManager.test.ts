@@ -4,7 +4,7 @@ describe("SelectionManager", () => {
   let selectionManager: SelectionManager
 
   beforeEach(() => {
-    selectionManager = new SelectionManager()
+    selectionManager = new SelectionManager({ writeToCLI: (value) => {} })
   })
 
   const createSVGElement = () =>

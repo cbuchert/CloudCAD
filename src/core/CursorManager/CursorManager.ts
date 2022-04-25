@@ -1,3 +1,4 @@
+import { getSVGPointFromClickEvent } from "../../utils/getSVGPointFromClickEvent"
 import { ICLIOutputManager } from "../CLIOutputManager"
 import { SelectionManager } from "../SelectionManager"
 
@@ -22,13 +23,14 @@ export interface ICursorManager {
   handlePick: () => void
   handleFence: () => void
   handleMarquee: () => void
+  // handleGetPoint: () => Promise<Vec2>
 }
 
 export class CursorManager implements ICursorManager {
   eventBuffer: CursorEvent[] = []
 
   constructor(
-    private svg: SVGElement,
+    private svg: SVGSVGElement,
     private selectionManager: SelectionManager,
     private cliOutputManager: ICLIOutputManager
   ) {
@@ -40,8 +42,12 @@ export class CursorManager implements ICursorManager {
   _handlePick: MouseEventHandler = (e) => {}
   _handleFence: MouseEventHandler = (e) => {}
   _handleMarquee: MouseEventHandler = (e) => {}
+  _handleGetPoint: MouseEventHandler = (e) => {}
+  _handleLogPoint: MouseEventHandler = (e) => {
+    console.log(getSVGPointFromClickEvent(e, this.svg))
+  }
 
-  private _cursorCallback: MouseEventHandler = this._handleEmpty
+  private _cursorCallback: MouseEventHandler = this._handleLogPoint
 
   private setCursorState = (newCallback: MouseEventHandler) => {
     this.svg.removeEventListener("click", this._cursorCallback)

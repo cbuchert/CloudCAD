@@ -16,7 +16,7 @@ export class App {
   constructor(
     private inputForm: HTMLFormElement,
     private outputElement: HTMLPreElement,
-    private svg: SVGElement
+    private svg: SVGSVGElement
   ) {
     this.initialize()
   }
