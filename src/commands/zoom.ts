@@ -4,10 +4,15 @@ export const zoom: Command = (app, svg) => {
   //TODO: Translate the zoom to work from the center of the screen, not the origin of the viewbox.
   //TODO: Prompt the user for the type of zoom.
   const scaleFactor = 2
-  const [minX, minY] = svg.getAttribute("viewBox").split(" ")
-  const x = svg.clientWidth / scaleFactor
-  const y = svg.clientHeight / scaleFactor
+  const [svgOriginDeltaX, svgOriginDeltaY] = svg
+    .getAttribute("viewBox")!
+    .split(" ")
+  const width = svg.clientWidth / scaleFactor
+  const height = svg.clientHeight / scaleFactor
 
-  svg.setAttribute("viewBox", `${minX} ${minY} ${x} ${y}`)
+  svg.setAttribute(
+    "viewBox",
+    `${svgOriginDeltaX} ${svgOriginDeltaY} ${width} ${height}`
+  )
   app.cliOutputManager.writeToCLI(`  Zoomed ${scaleFactor}x`)
 }
