@@ -32,7 +32,7 @@ export class CursorManager implements ICursorManager {
     private selectionManager: SelectionManager,
     private cliOutputManager: ICLIOutputManager
   ) {
-    cliOutputManager.writeToCLI("  Initializing the Cursor Manager.")
+    cliOutputManager.writeToCLI("  Initializing the Cursor manager.")
     svg.addEventListener("click", this._cursorCallback)
   }
 

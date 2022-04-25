@@ -11,7 +11,7 @@ export class CLIInputManager implements ICLIInputManager {
     private commandManager: ICommandManager,
     private cliOutputManager: ICLIOutputManager
   ) {
-    cliOutputManager.writeToCLI("  Initializing the CLI Input Manager.")
+    cliOutputManager.writeToCLI("  Initializing the CLI Input manager.")
     this.resetCLIInputHandler()
   }
 

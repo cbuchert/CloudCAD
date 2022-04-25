@@ -13,7 +13,7 @@ export class CommandManager implements ICommandManager {
     private _svg: SVGElement,
     private cliOutputManager: ICLIOutputManager
   ) {
-    cliOutputManager.writeToCLI("  Initializing the Command Manager.")
+    cliOutputManager.writeToCLI("  Initializing the Command manager.")
   }
 
   executeCommand = (command: string) => {
