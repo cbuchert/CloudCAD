@@ -22,6 +22,7 @@ html, body {
     display: flex;
     flex-direction: column;
     height: 200px;
+    margin: 0;
     overflow: scroll;
     padding: .5rem .75rem;
 }
@@ -32,4 +33,5 @@ html, body {
 
 .input {
     padding: .5rem .75rem;
+    width: 100%;
 }

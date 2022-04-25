@@ -10,7 +10,7 @@ export class KeypressManager implements IKeypressManager {
     private cliInputManager: ICLIInputManager,
     private commandManager: ICommandManager
   ) {
-    cliOutputManager.writeToCLI("  Initializing the Keypress manager.")
+    cliOutputManager.writeToCLI("Initializing the Keypress manager.", 2)
 
     document.onkeydown = (e) => {
       switch (e.key) {

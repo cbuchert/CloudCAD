@@ -4,7 +4,7 @@ export class SelectionManager {
   currentSelection: SVGElement[] = []
 
   constructor(private cliOutputManager: ICLIOutputManager) {
-    cliOutputManager.writeToCLI("  Initializing the Selection manager.")
+    cliOutputManager.writeToCLI("Initializing the Selection manager.", 2)
   }
 
   add = (elements: SVGElement[] = []) => {

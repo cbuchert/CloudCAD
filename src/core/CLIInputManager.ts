@@ -42,7 +42,7 @@ export class CLIInputManager implements ICLIInputManager {
     private commandManager: ICommandManager,
     private cliOutputManager: ICLIOutputManager
   ) {
-    cliOutputManager.writeToCLI("  Initializing the CLI Input manager.")
+    cliOutputManager.writeToCLI("Initializing the CLI Input manager.", 2)
     this._inputHandler = this._handleCommand
   }
 

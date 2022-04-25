@@ -1,16 +1,16 @@
 export interface ICLIOutputManager {
-  writeToCLI: (value: string) => void
+  writeToCLI: (value: string, depth?: number) => void
 }
 
 export class CLIOutputManager implements ICLIOutputManager {
   constructor(private _output: HTMLPreElement) {
-    this.writeToCLI("  Initializing the CLI Output manager.")
+    this.writeToCLI("Initializing the CLI Output manager.", 2)
   }
 
-  writeToCLI = (value: string) => {
+  writeToCLI = (value: string, depth: number = 0) => {
     const newNode = document.createElement("p")
 
-    newNode.innerText = value
+    newNode.innerText = " ".repeat(depth) + value
     newNode.classList.add("output-text")
 
     //Write to the output.

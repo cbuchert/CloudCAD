@@ -2,23 +2,23 @@ import { App } from "../core/App"
 import { Command } from "../types/command"
 
 const _zoomExtents = (app: App, svg: SVGSVGElement) => () => {
-  console.log("Zoom extents")
+  app.cliOutputManager.writeToCLI("Zooming to extents", 4)
 }
 
 const _zoomToScale = (app: App, svg: SVGSVGElement) => (input: string) => {
-  console.log("Zoom to scale")
+  app.cliOutputManager.writeToCLI("Zooming to scale", 4)
 }
 
 const _zoomByScale = (app: App, svg: SVGSVGElement) => (input: string) => {
-  console.log("Zoom by scale")
+  app.cliOutputManager.writeToCLI("Zooming by scale", 4)
 }
 
 const _zoomToWindow = (app: App, svg: SVGSVGElement) => (input: string) => {
-  console.log("Zoom to window")
+  app.cliOutputManager.writeToCLI("Zooming to window", 4)
 }
 
 const _zoomPrevious = (app: App, svg: SVGSVGElement) => () => {
-  console.log("Zoom previous")
+  app.cliOutputManager.writeToCLI("Zooming previous", 4)
 }
 
 export const zoom: Command = async (app, svg) => {
