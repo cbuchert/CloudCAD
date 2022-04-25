@@ -7,6 +7,7 @@ type ExecutableCommandlets = { [name: string]: Function }
 export interface ICLIInputManager {
   submit: () => void
   handleInputFromListOfCommandlets: (commandlets: Commandlet[]) => Promise<void>
+  handleCommandInput: () => void
 }
 
 export class CLIInputManager implements ICLIInputManager {
@@ -18,16 +19,23 @@ export class CLIInputManager implements ICLIInputManager {
 
   private _awaitValue =
     (executableCommandlets: ExecutableCommandlets) => async (input: string) => {
-      if (executableCommandlets[input]) {
-        executableCommandlets[input]()
+      if (executableCommandlets[input.toUpperCase()]) {
+        executableCommandlets[input.toUpperCase()]()
+      } else {
+        this.cliOutputManager.writeToCLI(
+          `[Error] ${input} is not an option. Please try again.`,
+          4
+        )
+
+        return
       }
 
-      this._updateToHandleCommand()
+      this.handleCommandInput()
     }
 
   private _inputHandler: (input: string) => Promise<void>
 
-  private _updateToHandleCommand = () => {
+  handleCommandInput = () => {
     this._inputHandler = this._handleCommand
   }
 
@@ -42,7 +50,7 @@ export class CLIInputManager implements ICLIInputManager {
     private commandManager: ICommandManager,
     private cliOutputManager: ICLIOutputManager
   ) {
-    cliOutputManager.writeToCLI("Initializing the CLI Input manager.", 2)
+    cliOutputManager.writeToCLI("Initializing the CLI Input manager.")
     this._inputHandler = this._handleCommand
   }
 

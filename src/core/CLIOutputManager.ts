@@ -4,7 +4,7 @@ export interface ICLIOutputManager {
 
 export class CLIOutputManager implements ICLIOutputManager {
   constructor(private _output: HTMLPreElement) {
-    this.writeToCLI("Initializing the CLI Output manager.", 2)
+    this.writeToCLI("Initializing the CLI Output manager.")
   }
 
   writeToCLI = (value: string, depth: number = 0) => {

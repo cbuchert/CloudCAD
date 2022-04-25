@@ -26,28 +26,28 @@ export const zoom: Command = async (app, svg) => {
 
   app.executeCommandletOnCLISelection([
     {
-      title: "[E]xtents",
-      command: "e",
+      title: "extents",
+      command: "E",
       callback: _zoomExtents(app, svg),
     },
     {
-      title: "[T]o scale",
-      command: "t",
+      title: "to scale",
+      command: "T",
       callback: _zoomToScale(app, svg),
     },
     {
-      title: "[S]cale by",
-      command: "s",
+      title: "scale by",
+      command: "S",
       callback: _zoomByScale(app, svg),
     },
     {
-      title: "[W]indow",
-      command: "w",
+      title: "to window",
+      command: "W",
       callback: _zoomToWindow(app, svg),
     },
     {
-      title: "[P]revious",
-      command: "p",
+      title: "previous",
+      command: "T",
       callback: _zoomPrevious(app, svg),
     },
   ])

@@ -10,12 +10,13 @@ export class KeypressManager implements IKeypressManager {
     private cliInputManager: ICLIInputManager,
     private commandManager: ICommandManager
   ) {
-    cliOutputManager.writeToCLI("Initializing the Keypress manager.", 2)
+    cliOutputManager.writeToCLI("Initializing the Keypress manager.")
 
     document.onkeydown = (e) => {
       switch (e.key) {
         case "Escape": {
-          cliOutputManager.writeToCLI("\\\\")
+          cliOutputManager.writeToCLI("*** cancel ***")
+          this.cliInputManager.handleCommandInput()
 
           break
         }

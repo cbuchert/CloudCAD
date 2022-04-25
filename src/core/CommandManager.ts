@@ -16,7 +16,7 @@ export class CommandManager implements ICommandManager {
     private _svg: SVGSVGElement,
     private cliOutputManager: ICLIOutputManager
   ) {
-    cliOutputManager.writeToCLI("Initializing the Command manager.", 2)
+    cliOutputManager.writeToCLI("Initializing the Command manager.")
     this.isExecutingCommand = false
   }
 

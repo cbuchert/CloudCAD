@@ -49,7 +49,10 @@ export class App {
 
   executeCommandletOnCLISelection = async (commandlets: Commandlet[]) => {
     this.cliOutputManager.writeToCLI(
-      "  " + commandlets.map(({ title }) => title).join(" | ")
+      "  " +
+        commandlets
+          .map(({ title, command }) => `[${command}] ${title}`)
+          .join("    ")
     )
 
     await this.cliInputManager.handleInputFromListOfCommandlets(commandlets)
