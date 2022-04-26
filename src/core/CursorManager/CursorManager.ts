@@ -1,4 +1,5 @@
 import { getSVGPointFromClickEvent } from "../../utils/getSVGPointFromClickEvent"
+import { App } from "../App"
 import { ICLIOutputManager } from "../CLIOutputManager"
 import { SelectionManager } from "../SelectionManager"
 
@@ -32,14 +33,23 @@ export class CursorManager implements ICursorManager {
   cursorY: HTMLDivElement
 
   constructor(
+    private app: App,
     private svg: SVGSVGElement,
     private selectionManager: SelectionManager,
     private cliOutputManager: ICLIOutputManager
   ) {
+    const submitOnContextClick: (e) => void = (e) => {
+      e.preventDefault()
+      app.cliInputManager.submit()
+    }
+
     this.cursorX = document.getElementById("cursor-x") as HTMLDivElement
     this.cursorY = document.getElementById("cursor-y") as HTMLDivElement
     cliOutputManager.writeToCLI("Initializing the Cursor manager.")
     svg.addEventListener("click", this._cursorCallback)
+    svg.addEventListener("contextmenu", submitOnContextClick)
+    this.cursorX.addEventListener("contextmenu", submitOnContextClick)
+    this.cursorY.addEventListener("contextmenu", submitOnContextClick)
     this.trackCursor()
   }
 

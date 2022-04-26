@@ -41,6 +41,7 @@ export class App {
       this.commandManager
     )
     this.cursorManager = new CursorManager(
+      this,
       this.svg,
       this.selectionManager,
       this.cliOutputManager
