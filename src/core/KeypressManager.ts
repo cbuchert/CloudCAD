@@ -22,9 +22,7 @@ export class KeypressManager implements IKeypressManager {
         }
 
         case " ": {
-          if (!commandManager.isExecutingCommand) {
-            this.cliInputManager.submit()
-          }
+          this.cliInputManager.submit()
 
           break
         }

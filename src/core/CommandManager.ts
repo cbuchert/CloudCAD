@@ -9,12 +9,10 @@ export interface ICommandManager {
   executeCommand: (command: string) => Promise<void>
   executeFromCommandlets: (commandlets: Commandlet[]) => Promise<void>
   listenForCommand: () => void
-  isExecutingCommand: boolean
 }
 
 export class CommandManager implements ICommandManager {
   private _previousCommand = ""
-  isExecutingCommand = false
 
   constructor(
     private app: App,

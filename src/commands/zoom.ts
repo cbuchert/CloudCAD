@@ -47,7 +47,7 @@ export const zoom: Command = async (app, svg) => {
     },
     {
       title: "previous",
-      command: "T",
+      command: "P",
       callback: _zoomPrevious(app, svg),
     },
   ])
