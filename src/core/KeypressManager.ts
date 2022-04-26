@@ -16,7 +16,7 @@ export class KeypressManager implements IKeypressManager {
       switch (e.key) {
         case "Escape": {
           cliOutputManager.writeToCLI("*** cancel ***")
-          this.cliInputManager.handleCommandInput()
+          this.commandManager.listenForCommand()
 
           break
         }

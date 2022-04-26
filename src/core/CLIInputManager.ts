@@ -1,71 +1,37 @@
 import { ICLIOutputManager } from "./CLIOutputManager"
-import { ExecutableCommandlets, ICommandManager } from "./CommandManager"
 
 export interface ICLIInputManager {
   submit: () => void
-  handleCommandInput: () => void
-  handleExecutableCommandlets: (
-    executableCommandlets: ExecutableCommandlets
-  ) => void
+  setInputHandler: (inputHandler: InputHandler) => void
 }
 
+type InputHandler = (input: string) => void
+
 export class CLIInputManager implements ICLIInputManager {
-  private _previousCommand: string = ""
-
-  private _handleCommand = async (input: string) => {
-    if (input) {
-      await this.commandManager.executeCommand(input)
-    } else {
-      this.cliOutputManager.writeToCLI(
-        `Executing previous command (${this._previousCommand})`
-      )
-      await this.commandManager.executeCommand(this._previousCommand)
-    }
-  }
-
-  private _awaitValue =
-    (executableCommandlets: ExecutableCommandlets) => async (input: string) => {
-      if (executableCommandlets[input.toUpperCase()]) {
-        executableCommandlets[input.toUpperCase()]()
-      } else {
-        this.cliOutputManager.writeToCLI(
-          `[Error] ${input} is not an option. Please try again.`,
-          4
-        )
-
-        return
-      }
-
-      this.handleCommandInput()
-    }
-
-  private _inputHandler: (input: string) => Promise<void>
-
-  handleCommandInput = () => {
-    this._inputHandler = this._handleCommand
-  }
-
-  handleExecutableCommandlets = (
-    executableCommandlets: ExecutableCommandlets
-  ) => {
-    this._inputHandler = this._awaitValue(executableCommandlets)
-  }
+  private _inputHandler: InputHandler = (input) => {}
 
   constructor(
-    private inputElement: HTMLInputElement,
-    private commandManager: ICommandManager,
-    private cliOutputManager: ICLIOutputManager
+    private cliOutputManager: ICLIOutputManager,
+    private inputElement: HTMLInputElement
   ) {
     cliOutputManager.writeToCLI("Initializing the CLI Input manager.")
-    this._inputHandler = this._handleCommand
+
+    // Always keep focus on the input.
+    inputElement.addEventListener("blur", () => {
+      setTimeout(() => {
+        inputElement.focus()
+      }, 0)
+    })
   }
 
-  submit = async () => {
+  submit = () => {
     const input = this.inputElement.value.trim()
 
-    if (input) this._previousCommand = input
     this.inputElement.value = ""
 
-    await this._inputHandler(input)
+    this._inputHandler(input)
   }
+
+  setInputHandler = (inputHandler: InputHandler) =>
+    (this._inputHandler = inputHandler)
 }

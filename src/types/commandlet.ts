@@ -3,3 +3,5 @@ export type Commandlet = {
   command: string
   callback: Function
 }
+
+export type ExecutableCommandlets = { [command: string]: Function }

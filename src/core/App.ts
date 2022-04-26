@@ -1,4 +1,3 @@
-import { Commandlet } from "../types/commandlet"
 import { CLIInputManager, ICLIInputManager } from "./CLIInputManager"
 import { CLIOutputManager, ICLIOutputManager } from "./CLIOutputManager"
 import { CommandManager, ICommandManager } from "./CommandManager"
@@ -24,17 +23,16 @@ export class App {
 
   initialize = () => {
     this.cliOutputManager = new CLIOutputManager(this.outputElement)
+    this.cliInputManager = new CLIInputManager(
+      this.cliOutputManager,
+      this.htmlInputElement
+    )
     this.selectionManager = new SelectionManager(this.cliOutputManager)
     this.commandManager = new CommandManager(
       this,
       this.svg,
       this.cliOutputManager,
       this.cliInputManager
-    )
-    this.cliInputManager = new CLIInputManager(
-      this.htmlInputElement,
-      this.commandManager,
-      this.cliOutputManager
     )
     this.keypressManager = new KeypressManager(
       this.cliOutputManager,
@@ -47,16 +45,5 @@ export class App {
       this.selectionManager,
       this.cliOutputManager
     )
-  }
-
-  executeCommandletOnCLISelection = async (commandlets: Commandlet[]) => {
-    this.cliOutputManager.writeToCLI(
-      "  " +
-        commandlets
-          .map(({ title, command }) => `[${command}] ${title}`)
-          .join("    ")
-    )
-
-    await this.commandManager.executeFromCommandlets(commandlets)
   }
 }

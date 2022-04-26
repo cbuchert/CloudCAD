@@ -7,10 +7,10 @@ export class CLIOutputManager implements ICLIOutputManager {
     this.writeToCLI("Initializing the CLI Output manager.")
   }
 
-  writeToCLI = (value: string, depth: number = 0) => {
+  writeToCLI = (value: string, indentDepth: number = 0) => {
     const newNode = document.createElement("p")
 
-    newNode.innerText = " ".repeat(depth) + value
+    newNode.innerText = " ".repeat(indentDepth) + value
     newNode.classList.add("output-text")
 
     //Write to the output.
