@@ -7,6 +7,7 @@ export interface ICLIInputManager {
 
 type InputHandler = (input: string) => void
 
+// TODO: Refactor this to implement around an observable.
 export class CLIInputManager implements ICLIInputManager {
   private _inputHandler: InputHandler = (input) => {}
 

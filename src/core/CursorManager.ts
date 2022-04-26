@@ -1,7 +1,7 @@
-import { getSVGPointFromClickEvent } from "../../utils/getSVGPointFromClickEvent"
-import { App } from "../App"
-import { ICLIOutputManager } from "../CLIOutputManager"
-import { SelectionManager } from "../SelectionManager"
+import { getSVGPointFromClickEvent } from "../utils/getSVGPointFromClickEvent"
+import { App } from "./App"
+import { ICLIOutputManager } from "./CLIOutputManager"
+import { SelectionManager } from "./SelectionManager"
 
 type MouseEventHandler = (e: MouseEvent) => void
 
@@ -26,6 +26,7 @@ export interface ICursorManager {
   // handleGetPoint: () => Promise<Vec2>
 }
 
+// TODO: Refactor this around an observable.
 export class CursorManager implements ICursorManager {
   eventBuffer: CursorEvent[] = []
 

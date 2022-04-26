@@ -1,7 +1,7 @@
 import { CLIInputManager, ICLIInputManager } from "./CLIInputManager"
 import { CLIOutputManager, ICLIOutputManager } from "./CLIOutputManager"
 import { CommandManager, ICommandManager } from "./CommandManager"
-import { CursorManager, ICursorManager } from "./CursorManager/CursorManager"
+import { CursorManager, ICursorManager } from "./CursorManager"
 import { IKeypressManager, KeypressManager } from "./KeypressManager"
 import { SelectionManager } from "./SelectionManager"
 

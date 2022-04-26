@@ -12,6 +12,7 @@ export interface ICommandManager {
 }
 
 // TODO: Refactor this so that flow control is managed. Right now, the implementation is naive.
+// Still figuring out what the shape of that looks like. :|
 export class CommandManager implements ICommandManager {
   private _previousCommand = ""
 
