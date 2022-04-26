@@ -13,7 +13,14 @@ export class CLIInputManager implements ICLIInputManager {
   private _previousCommand: string = ""
 
   private _handleCommand = async (input: string) => {
-    await this.commandManager.executeCommand(input)
+    if (input) {
+      await this.commandManager.executeCommand(input)
+    } else {
+      this.cliOutputManager.writeToCLI(
+        `Executing previous command (${this._previousCommand})`
+      )
+      await this.commandManager.executeCommand(this._previousCommand)
+    }
   }
 
   private _awaitValue =
