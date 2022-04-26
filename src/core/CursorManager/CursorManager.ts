@@ -3,7 +3,6 @@ import { App } from "../App"
 import { ICLIOutputManager } from "../CLIOutputManager"
 import { SelectionManager } from "../SelectionManager"
 
-type CursorState = "empty" | "pick" | "fence" | "marquee"
 type MouseEventHandler = (e: MouseEvent) => void
 
 type CursorEvent = {
@@ -29,8 +28,6 @@ export interface ICursorManager {
 
 export class CursorManager implements ICursorManager {
   eventBuffer: CursorEvent[] = []
-  cursorX: HTMLDivElement
-  cursorY: HTMLDivElement
 
   constructor(
     private app: App,
@@ -38,28 +35,13 @@ export class CursorManager implements ICursorManager {
     private selectionManager: SelectionManager,
     private cliOutputManager: ICLIOutputManager
   ) {
-    const submitOnContextClick: (e) => void = (e) => {
-      e.preventDefault()
-      app.cliInputManager.submit()
-    }
-
-    this.cursorX = document.getElementById("cursor-x") as HTMLDivElement
-    this.cursorY = document.getElementById("cursor-y") as HTMLDivElement
     cliOutputManager.writeToCLI("Initializing the Cursor manager.")
     svg.addEventListener("click", this._cursorCallback)
-    svg.addEventListener("contextmenu", submitOnContextClick)
-    this.cursorX.addEventListener("contextmenu", submitOnContextClick)
-    this.cursorY.addEventListener("contextmenu", submitOnContextClick)
-    this.trackCursor()
-  }
-
-  private trackCursor = () => {
-    this.svg.addEventListener("mousemove", (e) => {
-      requestAnimationFrame(() => {
-        this.cursorX.style.left = e.clientX + "px"
-        this.cursorY.style.top = e.clientY + "px"
-      })
+    svg.addEventListener("contextmenu", (e: MouseEvent) => {
+      e.preventDefault()
+      app.cliInputManager.submit()
     })
+    this.trackCursor()
   }
 
   _handleEmpty: MouseEventHandler = (e) => {}
@@ -73,6 +55,18 @@ export class CursorManager implements ICursorManager {
 
   private _cursorCallback: MouseEventHandler = this._handleLogPoint
 
+  private trackCursor = () => {
+    const cursorX = document.getElementById("cursor-x") as HTMLDivElement
+    const cursorY = document.getElementById("cursor-y") as HTMLDivElement
+
+    this.svg.addEventListener("mousemove", (e) => {
+      requestAnimationFrame(() => {
+        cursorX.style.left = e.clientX + "px"
+        cursorY.style.top = e.clientY + "px"
+      })
+    })
+  }
+
   private setCursorState = (newCallback: MouseEventHandler) => {
     this.svg.removeEventListener("click", this._cursorCallback)
     this.svg.addEventListener("click", newCallback)
@@ -81,8 +75,19 @@ export class CursorManager implements ICursorManager {
 
   private _clearEventBuffer = () => (this.eventBuffer = [])
 
-  handleEmpty = () => {}
-  handlePick = () => {}
-  handleFence = () => {}
-  handleMarquee = () => {}
+  handleEmpty = () => {
+    this.setCursorState(this._handleEmpty)
+  }
+
+  handlePick = () => {
+    this.setCursorState(this._handlePick)
+  }
+
+  handleFence = () => {
+    this.setCursorState(this._handleFence)
+  }
+
+  handleMarquee = () => {
+    this.setCursorState(this._handleMarquee)
+  }
 }

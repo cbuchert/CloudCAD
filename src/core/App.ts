@@ -28,7 +28,8 @@ export class App {
     this.commandManager = new CommandManager(
       this,
       this.svg,
-      this.cliOutputManager
+      this.cliOutputManager,
+      this.cliInputManager
     )
     this.cliInputManager = new CLIInputManager(
       this.htmlInputElement,
@@ -56,6 +57,6 @@ export class App {
           .join("    ")
     )
 
-    await this.cliInputManager.handleInputFromListOfCommandlets(commandlets)
+    await this.commandManager.executeFromCommandlets(commandlets)
   }
 }

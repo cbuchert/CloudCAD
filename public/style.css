@@ -23,18 +23,19 @@ html, body {
     width: 100%;
 }
 
-.cursor-x {
+.cursor-x, .cursor-y {
     background-color: #fff;
     cursor: none;
+    pointer-events: none;
     position: absolute;
+}
+
+.cursor-x {
     height: 100%;
     width: 1px;
 }
 
 .cursor-y {
-    background-color: #fff;
-    cursor: none;
-    position: absolute;
     height: 1px;
     width: 100%;
 }

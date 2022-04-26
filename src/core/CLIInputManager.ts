@@ -1,13 +1,12 @@
-import { Commandlet } from "../types/commandlet"
 import { ICLIOutputManager } from "./CLIOutputManager"
-import { ICommandManager } from "./CommandManager"
-
-type ExecutableCommandlets = { [name: string]: Function }
+import { ExecutableCommandlets, ICommandManager } from "./CommandManager"
 
 export interface ICLIInputManager {
   submit: () => void
-  handleInputFromListOfCommandlets: (commandlets: Commandlet[]) => Promise<void>
   handleCommandInput: () => void
+  handleExecutableCommandlets: (
+    executableCommandlets: ExecutableCommandlets
+  ) => void
 }
 
 export class CLIInputManager implements ICLIInputManager {
@@ -39,7 +38,7 @@ export class CLIInputManager implements ICLIInputManager {
     this._inputHandler = this._handleCommand
   }
 
-  private updateToHandleExecutableCommandlets = (
+  handleExecutableCommandlets = (
     executableCommandlets: ExecutableCommandlets
   ) => {
     this._inputHandler = this._awaitValue(executableCommandlets)
@@ -61,17 +60,5 @@ export class CLIInputManager implements ICLIInputManager {
     this.inputElement.value = ""
 
     await this._inputHandler(input)
-  }
-
-  handleInputFromListOfCommandlets = async (commandlets: Commandlet[]) => {
-    const executableCommandlets = commandlets.reduce(
-      (acc, commandlet) => ({
-        ...acc,
-        [commandlet.command]: commandlet.callback,
-      }),
-      {}
-    )
-
-    this.updateToHandleExecutableCommandlets(executableCommandlets)
   }
 }
