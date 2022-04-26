@@ -11,6 +11,7 @@ export interface ICommandManager {
   listenForCommand: () => void
 }
 
+// TODO: Refactor this so that flow control is managed. Right now, the implementation is naive.
 export class CommandManager implements ICommandManager {
   private _previousCommand = ""
 
