@@ -1,3 +1,4 @@
+import { filter, take } from "rxjs"
 import { commands } from "../commands"
 import { Commandlet, ExecutableCommandlets } from "../types/commandlet"
 import { aliases } from "./aliases"
@@ -8,13 +9,11 @@ import { ICLIOutputManager } from "./CLIOutputManager"
 export interface ICommandManager {
   executeCommand: (command: string) => Promise<void>
   executeFromCommandlets: (commandlets: Commandlet[]) => Promise<void>
-  listenForCommand: () => void
 }
 
-// TODO: Refactor this so that flow control is managed. Right now, the implementation is naive.
-// Still figuring out what the shape of that looks like. :|
 export class CommandManager implements ICommandManager {
   private _previousCommand = ""
+  private isListeningForCommand = true
 
   constructor(
     private app: App,
@@ -23,11 +22,14 @@ export class CommandManager implements ICommandManager {
     private cliInputManager: ICLIInputManager
   ) {
     cliOutputManager.writeToCLI("Initializing the Command manager.")
-    cliInputManager.setInputHandler(this._handleCommand)
+
+    this._listenForCommands()
   }
 
-  listenForCommand = () => {
-    this.cliInputManager.setInputHandler(this._handleCommand)
+  _listenForCommands = () => {
+    this.cliInputManager.$cliInputValue
+      .pipe(filter((value) => this.isListeningForCommand))
+      .subscribe(this._handleCommand)
   }
 
   executeCommand = async (command: string) => {
@@ -67,20 +69,6 @@ export class CommandManager implements ICommandManager {
     return commands[command](this.app, this.svg)
   }
 
-  private _handleCommandlets =
-    (executableCommandlets: ExecutableCommandlets) => (input: string) => {
-      if (input && input.toUpperCase() in executableCommandlets) {
-        executableCommandlets[input.toUpperCase()]()
-
-        this.cliInputManager.setInputHandler(this._handleCommand)
-      } else {
-        this.cliOutputManager.writeToCLI(
-          `"${input}" not recognized. Please try again.`,
-          4
-        )
-      }
-    }
-
   executeFromCommandlets = async (commandlets: Commandlet[]) => {
     const executableCommandlets = commandlets.reduce(
       (acc, commandlet) => ({
@@ -96,8 +84,27 @@ export class CommandManager implements ICommandManager {
         .join("    "),
       2
     )
-    this.cliInputManager.setInputHandler(
-      this._handleCommandlets(executableCommandlets)
-    )
+
+    this._listenForCommandlets(executableCommandlets)
   }
+
+  _listenForCommandlets = (executableCommandlets: ExecutableCommandlets) => {
+    this.isListeningForCommand = false
+    this.cliInputManager.$cliInputValue
+      .pipe(
+        filter((value) => !this.isListeningForCommand),
+        take(1)
+      )
+      .subscribe(this._handleCommandlets(executableCommandlets))
+      .add(() => (this.isListeningForCommand = true))
+  }
+
+  private _handleCommandlets =
+    (executableCommandlets: ExecutableCommandlets) => (input: string) => {
+      if (input && input.toUpperCase() in executableCommandlets) {
+        executableCommandlets[input.toUpperCase()]()
+      } else {
+        this.cliOutputManager.writeToCLI(`"${input}" not recognized.`, 4)
+      }
+    }
 }

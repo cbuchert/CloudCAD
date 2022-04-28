@@ -1,15 +1,13 @@
+import { Subject } from "rxjs"
 import { ICLIOutputManager } from "./CLIOutputManager"
 
 export interface ICLIInputManager {
+  $cliInputValue: Subject<string>
   submit: () => void
-  setInputHandler: (inputHandler: InputHandler) => void
 }
 
-type InputHandler = (input: string) => void
-
-// TODO: Refactor this to implement around an observable.
 export class CLIInputManager implements ICLIInputManager {
-  private _inputHandler: InputHandler = (input) => {}
+  $cliInputValue = new Subject<string>()
 
   constructor(
     private cliOutputManager: ICLIOutputManager,
@@ -26,13 +24,10 @@ export class CLIInputManager implements ICLIInputManager {
   }
 
   submit = () => {
-    const input = this.inputElement.value.trim()
+    const value = this.inputElement.value.trim()
 
     this.inputElement.value = ""
 
-    this._inputHandler(input)
+    this.$cliInputValue.next(value)
   }
-
-  setInputHandler = (inputHandler: InputHandler) =>
-    (this._inputHandler = inputHandler)
 }

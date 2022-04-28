@@ -36,8 +36,7 @@ export class App {
     )
     this.keypressManager = new KeypressManager(
       this.cliOutputManager,
-      this.cliInputManager,
-      this.commandManager
+      this.cliInputManager
     )
     this.cursorManager = new CursorManager(
       this,
