@@ -1,45 +1,38 @@
 import { ICLIOutputManager } from "./CLIOutputManager"
 
-type ViewBox = {
-  x: number
-  y: number
-  height: number
-  width: number
-}
-
 export interface IViewBoxManager {
-  setViewBox: ({
-    x,
-    y,
-    height,
-    width,
-  }: {
-    x: number
-    y: number
-    height: number
-    width: number
-  }) => void
+  setViewBox: (newViewBox: SVGRect) => void
+  previousViewBox: SVGRect
 }
 
 export class ViewBoxManager implements IViewBoxManager {
-  previousViewBox: ViewBox
+  previousViewBox: SVGRect
 
   constructor(
     private cliOutputManager: ICLIOutputManager,
     private svg: SVGSVGElement,
   ) {
     this.cliOutputManager.writeToCLI("Initializing the ViewBox manager.")
-    this.previousViewBox = svg.getBBox()
+    this.previousViewBox = this._getCurrentViewBox()
     //  TODO: Update the width and height when the window changes size.
   }
 
-  setViewBox = (newViewBox: ViewBox) => {
+  private _getCurrentViewBox = (): SVGRect => {
+    const [x, y, height, width] = this.svg
+      .getAttribute("viewBox")!
+      .split(" ")
+      .map(parseFloat)
+
+    return <DOMRect> { x, y, height, width }
+  }
+
+  setViewBox = (newViewBox: SVGRect) => {
+    this.previousViewBox = this._getCurrentViewBox()
+
     // TODO: Interpolate between values on animation frames for smooth pan / zoom.
     this.svg.setAttribute(
       "viewBox",
       `${newViewBox.x} ${newViewBox.y} ${newViewBox.width} ${newViewBox.height}`,
     )
-
-    this.previousViewBox = newViewBox
   }
 }

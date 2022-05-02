@@ -20,6 +20,7 @@ const _zoomToWindow = (app: App, svg: SVGSVGElement) => (input: string) => {
 
 const _zoomPrevious = (app: App, svg: SVGSVGElement) => () => {
   app.cliOutputManager.writeToCLI("Zooming previous", 4)
+  app.viewBoxManager.setViewBox(app.viewBoxManager.previousViewBox)
 }
 
 export const zoom: Command = async (app, svg) => {
