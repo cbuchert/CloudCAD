@@ -24,7 +24,7 @@ const _zoomPrevious = (app: App, svg: SVGSVGElement) => () => {
 export const zoom: Command = async (app, svg) => {
   //TODO: Translate the zoom to work from the center of the screen, not the origin of the viewbox.
 
-  await app.commandManager.executeFromCommandlets([
+  app.commandManager.executeFromCommandlets([
     {
       title: "extents",
       command: "E",
