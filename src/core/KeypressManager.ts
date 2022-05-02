@@ -1,5 +1,6 @@
 import { ICLIInputManager } from "./CLIInputManager/CLIInputManager"
 import { ICLIOutputManager } from "./CLIOutputManager"
+import { ICommandManager } from "./CommandManager/CommandManager"
 
 export interface IKeypressManager {}
 
@@ -7,6 +8,7 @@ export class KeypressManager implements IKeypressManager {
   constructor(
     private cliOutputManager: ICLIOutputManager,
     private cliInputManager: ICLIInputManager,
+    private commandManager: ICommandManager,
   ) {
     cliOutputManager.writeToCLI("Initializing the Keypress manager.")
 
@@ -15,6 +17,7 @@ export class KeypressManager implements IKeypressManager {
         case "Escape": {
           cliOutputManager.writeToCLI("*** cancel ***")
           this.cliInputManager.clear()
+          this.commandManager.reset()
 
           break
         }
