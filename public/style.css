@@ -23,6 +23,10 @@ html, body {
     width: 100%;
 }
 
+.svg * {
+    vector-effect: non-scaling-stroke;
+}
+
 .cursor-x, .cursor-y {
     background-color: #fff;
     cursor: none;
