@@ -3,6 +3,7 @@ import { Command } from "../types/command"
 
 const _zoomExtents = (app: App, svg: SVGSVGElement) => () => {
   app.cliOutputManager.writeToCLI("Zooming to extents", 4)
+  app.viewBoxManager.setViewBox(svg.getBBox())
 }
 
 const _zoomToScale = (app: App, svg: SVGSVGElement) => (input: string) => {

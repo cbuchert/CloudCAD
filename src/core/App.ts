@@ -10,6 +10,7 @@ import {
 import { CursorManager, ICursorManager } from "./CursorManager"
 import { IKeypressManager, KeypressManager } from "./KeypressManager"
 import { SelectionManager } from "./SelectionManager"
+import { IViewBoxManager, ViewBoxManager } from "./ViewBoxManager"
 
 export class App {
   selectionManager!: SelectionManager
@@ -18,6 +19,7 @@ export class App {
   cliOutputManager!: ICLIOutputManager
   keypressManager!: IKeypressManager
   cursorManager!: ICursorManager
+  viewBoxManager!: IViewBoxManager
 
   constructor(
     private htmlInputElement: HTMLInputElement,
@@ -29,6 +31,7 @@ export class App {
 
   initialize = () => {
     this.cliOutputManager = new CLIOutputManager(this.outputElement)
+    this.viewBoxManager = new ViewBoxManager(this.cliOutputManager, this.svg)
     this.selectionManager = new SelectionManager(this.cliOutputManager)
     this.commandManager = new CommandManager(
       this,

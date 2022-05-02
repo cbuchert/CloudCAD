@@ -42,7 +42,7 @@ export class CLIInputManager implements ICLIInputManager {
         break
 
       case "isListeningForRawValue":
-        console.log("emit the raw value somehow")
+        console.log("emit the raw value somehow and set the state back.")
         break
     }
   }
